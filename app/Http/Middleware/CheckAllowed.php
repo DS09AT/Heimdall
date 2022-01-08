@@ -2,10 +2,12 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Closure;
 use Illuminate\Support\Facades\Auth;
-use App\User;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
+
 use Session;
 
 class CheckAllowed
@@ -22,7 +24,7 @@ class CheckAllowed
         $route = Route::currentRouteName();
         $current_user = User::currentUser();
 
-        if(str_is('users*', $route)) {
+        if(Str::is('users*', $route)) {
             if($current_user->id !== 1) {
                 return redirect()->route('dash');
             }

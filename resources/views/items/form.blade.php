@@ -10,7 +10,7 @@
                     $checked = false;
                     if(isset($item->pinned) && (bool)$item->pinned === true) $checked = true;
                     $set_checked = ($checked) ? ' checked="checked"' : '';
-                    ?>                   
+                    ?>
                     <input type="checkbox" name="pinned" value="1"<?php echo $set_checked;?> />
                     <span class="slider round"></span>
                 </label>
@@ -27,16 +27,16 @@
             </div>
             <div class="input">
                 <label>{{ __('app.apps.apptype') }} *</label>
-                {!! Form::select('class', App\Application::applist(), null, array('class' => 'form-control config-item', 'id' => 'apptype', 'data-config' => 'type')) !!}
+                {!! Form::select('class', App\Models\Application::applist(), null, array('class' => 'form-control config-item', 'id' => 'apptype', 'data-config' => 'type')) !!}
             </div>
 
             <div class="input">
-                <label>{{ __('app.apps.colour') }} *</label>
+                <label>{{ __('app.apps.colour') }}</label>
                 {!! Form::text('colour', null, array('placeholder' => __('app.apps.hex'), 'id' => 'appcolour', 'class' => 'form-control color-picker set-bg-elem')) !!}
             </div>
 
             <div class="input">
-                <label>{{ strtoupper(__('app.url')) }}</label>
+                <label>{{ strtoupper(__('app.url')) }} *</label>
                 {!! Form::text('url', null, array('placeholder' => __('app.url'), 'id' => 'appurl', 'class' => 'form-control')) !!}
             </div>
 
@@ -67,7 +67,6 @@
             </div>
 
 
-
             <div class="newblock" style="display: block;">
                 <h2>Preview</h2>
             </div>
@@ -79,7 +78,7 @@
 
 
 
-            
+
             @if(isset($item) && $item->enhanced())
 
             <div id="sapconfig" style="display: block;">
@@ -88,18 +87,18 @@
                 @endif
             </div>
 
-            @elseif(old('class') && App\Item::isEnhanced(old('class')))
+            @elseif(old('class') && App\Models\Item::isEnhanced(old('class')))
 
             <div id="sapconfig" style="display: block;">
-                @include('SupportedApps::'.App\Item::nameFromClass(old('class')).'.config')
+                @include('SupportedApps::'.App\Models\Item::nameFromClass(old('class')).'.config')
             </div>
 
             @else
 
             <div id="sapconfig"></div>
-            
+
             @endif
-            
+
         </div>
         <footer>
             <div class="section-title">&nbsp;</div>

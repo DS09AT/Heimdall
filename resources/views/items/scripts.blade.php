@@ -19,7 +19,7 @@
                 });
             })
 
-            var availableTags = @json(App\Application::all()->pluck('name'));
+            var availableTags = @json(App\Models\Application::all()->pluck('name'));
 
             $( "#appname" ).autocomplete({
                 source: availableTags,

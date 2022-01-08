@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Item;
+use App\Models\User;
 use Illuminate\Http\Request;
-use App\Item;
-use App\User;
+use Illuminate\Support\Str;
+
 use DB;
 
 class TagController extends Controller
@@ -61,7 +63,7 @@ class TagController extends Controller
             ]);
         }
 
-        $slug = str_slug($request->title, '-');
+        $slug = Str::slug($request->title, '-');
 
         $current_user = User::currentUser();
 
@@ -108,7 +110,7 @@ class TagController extends Controller
 
         // show the edit form and pass the nerd
         return view('tags.edit')
-            ->with('item', $item);    
+            ->with('item', $item);
     }
 
     /**
@@ -131,7 +133,7 @@ class TagController extends Controller
             ]);
         }
 
-        $slug = str_slug($request->title, '-');
+        $slug = Str::slug($request->title, '-');
         // set item type to tag
         $request->merge([
             'url' => $slug
@@ -161,7 +163,7 @@ class TagController extends Controller
         } else {
             Item::find($id)->delete();
         }
-        
+
         $route = route('tags.index', []);
         return redirect($route)
             ->with('success',__('app.alert.success.item_deleted'));
@@ -178,7 +180,7 @@ class TagController extends Controller
         //
         Item::withTrashed()
                 ->where('id', $id)
-                ->restore();        
+                ->restore();
         $route = route('tags.index', []);
         return redirect($route)
             ->with('success',__('app.alert.success.item_restored'));

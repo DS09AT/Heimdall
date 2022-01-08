@@ -22,8 +22,11 @@ use Psr\Container\ContainerInterface;
 trait ServiceSubscriberTrait
 {
     /** @var ContainerInterface */
-    private $container;
+    protected $container;
 
+    /**
+     * {@inheritdoc}
+     */
     public static function getSubscribedServices(): array
     {
         static $services;
@@ -39,9 +42,19 @@ trait ServiceSubscriberTrait
                 continue;
             }
 
-            if (self::class === $method->getDeclaringClass()->name && ($returnType = $method->getReturnType()) && !$returnType->isBuiltin()) {
-                $services[self::class.'::'.$method->name] = '?'.$returnType->getName();
+            if (self::class !== $method->getDeclaringClass()->name) {
+                continue;
             }
+
+            if (!($returnType = $method->getReturnType()) instanceof \ReflectionNamedType) {
+                continue;
+            }
+
+            if ($returnType->isBuiltin()) {
+                continue;
+            }
+
+            $services[self::class.'::'.$method->name] = '?'.$returnType->getName();
         }
 
         return $services;
@@ -49,6 +62,8 @@ trait ServiceSubscriberTrait
 
     /**
      * @required
+     *
+     * @return ContainerInterface|null
      */
     public function setContainer(ContainerInterface $container)
     {
@@ -57,5 +72,7 @@ trait ServiceSubscriberTrait
         if (\is_callable(['parent', __FUNCTION__])) {
             return parent::setContainer($container);
         }
+
+        return null;
     }
 }

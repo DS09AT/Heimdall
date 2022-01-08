@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Setting;
-use App\SettingGroup;
-use App\User;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use App\Models\Setting;
+use App\Models\SettingGroup;
+use App\Models\User;
 
 class SettingsController extends Controller
 {
@@ -48,7 +48,7 @@ class SettingsController extends Controller
             ]);
         } else {
             $route = route('settings.list', []);
-            return redirect($route) 
+            return redirect($route)
             ->with([
                 'error' => __('app.alert.error.not_exist'),
             ]);
@@ -77,22 +77,22 @@ class SettingsController extends Controller
                     $path = $request->file('value')->store('backgrounds');
                     $setting_value = $path;
                 }
-            
+
             } else {
                 $setting_value = $data->value;
             }
 
             $user->settings()->detach($setting->id);
             $user->settings()->save($setting, ['uservalue' => $setting_value]);
-            
+
             $route = route('settings.index', []);
-            return redirect($route) 
+            return redirect($route)
             ->with([
                 'success' => __('app.alert.success.setting_updated'),
             ]);
         } else {
             $route = route('settings.index', []);
-            return redirect($route) 
+            return redirect($route)
             ->with([
                 'error' => __('app.alert.error.not_exist'),
             ]);
@@ -112,16 +112,16 @@ class SettingsController extends Controller
             $user->settings()->save($setting, ['uservalue' => '']);
         }
         $route = route('settings.index', []);
-        return redirect($route) 
+        return redirect($route)
         ->with([
             'success' => __('app.alert.success.setting_updated'),
         ]);
-    
+
     }
 
     public function search(Request $request)
     {
-        
+
     }
 
 }

@@ -5,9 +5,9 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Artisan;
 use Schema;
-use App\Setting;
-use App\User;
-use App\Application;
+use App\Models\Setting;
+use App\Models\User;
+use App\Models\Application;
 use App\Jobs\ProcessApps;
 
 class AppServiceProvider extends ServiceProvider
@@ -39,11 +39,11 @@ class AppServiceProvider extends ServiceProvider
                 $db_version = Setting::_fetch('version');
                 $app_version = config('app.version');
                 if(version_compare($app_version, $db_version) == 1) { // app is higher than db, so need to run migrations etc
-                    Artisan::call('migrate', array('--path' => 'database/migrations', '--force' => true, '--seed' => true));                   
+                    Artisan::call('migrate', array('--path' => 'database/migrations', '--force' => true, '--seed' => true));
                 }
 
             } else {
-                Artisan::call('migrate', array('--path' => 'database/migrations', '--force' => true, '--seed' => true)); 
+                Artisan::call('migrate', array('--path' => 'database/migrations', '--force' => true, '--seed' => true));
             }
 
         }
@@ -52,7 +52,7 @@ class AppServiceProvider extends ServiceProvider
             Artisan::call('storage:link');
             \Session::put('current_user', null);
         }
-        
+
         $applications = Application::all();
         if($applications->count() <= 0) {
             if (class_exists('ZipArchive')) {
@@ -60,27 +60,27 @@ class AppServiceProvider extends ServiceProvider
             } else {
                 die("You are missing php-zip");
             }
-            
+
         }
 
         // User specific settings need to go here as session isn't available at this point in the app
-        view()->composer('*', function ($view) 
+        view()->composer('*', function ($view)
         {
 
             if(isset($_SERVER['HTTP_AUTHORIZATION']) && !empty($_SERVER['HTTP_AUTHORIZATION'])) {
-                list($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']) = 
-                explode(':', base64_decode(substr($_SERVER['HTTP_AUTHORIZATION'], 6)));
+                list($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']) =
+                    explode(':', base64_decode(substr($_SERVER['HTTP_AUTHORIZATION'], 6)));
             }
             if(!\Auth::check()) {
                 if(isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW'])
-                        && !empty($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_PW'])) {
+                    && !empty($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_PW'])) {
                     $credentials = ['username' => $_SERVER['PHP_AUTH_USER'], 'password' => $_SERVER['PHP_AUTH_PW']];
-                    
+
                     if (\Auth::attempt($credentials, true)) {
                         // Authentication passed...
                         $user = \Auth::user();
                         //\Session::put('current_user', $user);
-                        session(['current_user' => $user]);                
+                        session(['current_user' => $user]);
                     }
                 }
                 elseif(isset($_SERVER['REMOTE_USER']) && !empty($_SERVER['REMOTE_USER'])) {
@@ -103,14 +103,14 @@ class AppServiceProvider extends ServiceProvider
             $allusers = User::all();
             $current_user = User::currentUser();
 
-            $view->with('alt_bg', $alt_bg );    
-            $view->with('allusers', $allusers );    
-            $view->with('current_user', $current_user );   
+            $view->with('alt_bg', $alt_bg );
+            $view->with('allusers', $allusers );
+            $view->with('current_user', $current_user );
 
-    
-            
-            
-        });  
+
+
+
+        });
 
         $this->app['view']->addNamespace('SupportedApps', app_path('SupportedApps'));
 
@@ -125,7 +125,7 @@ class AppServiceProvider extends ServiceProvider
 
     }
 
-     /**
+    /**
      * Generate app key if missing and .env exists
      *
      * @return void

@@ -7,7 +7,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Application;
+use App\Models\Application;
 use App\SupportedApps;
 
 class ProcessApps implements ShouldQueue
@@ -34,7 +34,7 @@ class ProcessApps implements ShouldQueue
         $localapps = Application::all();
         $list = json_decode(SupportedApps::getList()->getBody());
         $validapps = [];
-        
+
         foreach($list->apps as $app) {
             $validapps[] = $app->appid;
             $localapp = $localapps->where('appid', $app->appid)->first();
@@ -55,7 +55,7 @@ class ProcessApps implements ShouldQueue
                 }  else {
                     SupportedApps::getFiles($app);
                     SupportedApps::saveApp($app, $application);
-      
+
                 }
             }
         }

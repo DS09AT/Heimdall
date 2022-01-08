@@ -2,12 +2,12 @@
 
 @section('content')
 <?php
-$user = \App\User::currentUser();
+$user = \App\Models\User::currentUser();
 ?>
 <form class="form-horizontal" method="POST" action="{{ route('login') }}">
     {{ csrf_field() }}
     <div class="userlist">
-    
+
         <div class="user" href="{{ route('user.set', [$user->id]) }}">
             @if($user->avatar)
             <img class="user-img" src="{{ asset('/storage/'.$user->avatar) }}" />
@@ -19,7 +19,7 @@ $user = \App\User::currentUser();
             <button type="submit" class="btn btn-primary">Login</button>
         </div>
     </div>
-        
+
 </form>
 
 @endsection

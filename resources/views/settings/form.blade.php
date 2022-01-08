@@ -10,14 +10,14 @@
             {!! csrf_field() !!}
             <?php /*<div class="input">
                 <label>Application name</label>
-                {!! Form::select('supported', \App\Item::supportedOptions(), array('placeholder' => 'Title','class' => 'form-control')) !!}
+                {!! Form::select('supported', \App\Models\Item::supportedOptions(), array('placeholder' => 'Title','class' => 'form-control')) !!}
             </div>*/ ?>
 
             <div class="input">
                     {!! $setting->edit_value !!}
             </div>
 
-            
+
         </div>
         <footer>
             <div class="section-title">&nbsp;</div>

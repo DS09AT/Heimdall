@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\User;
 use App\Http\Controllers\Controller;
-use App\User;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -79,7 +79,7 @@ class UserController extends Controller
         }
 
         $user->save();
-        
+
         $route = route('dash', []);
         return redirect($route)
             ->with('success',__('app.alert.success.user_updated'));
@@ -136,7 +136,7 @@ class UserController extends Controller
         } elseif($password == 'null') {
             $user->password = null;
         }
-    
+
         if($request->hasFile('file')) {
             $path = $request->file('file')->store('avatars');
             $user->avatar = $path;

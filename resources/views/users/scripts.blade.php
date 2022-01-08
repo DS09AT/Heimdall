@@ -7,7 +7,7 @@
               // options
             });
 
-            var availableTags = @json(App\Item::supportedOptions());
+            var availableTags = @json(App\Models\Item::supportedOptions());
 
             $( "#appname" ).autocomplete({
                 source: availableTags,

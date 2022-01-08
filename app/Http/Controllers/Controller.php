@@ -7,7 +7,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
-use App\User;
+use App\Models\User;
 
 class Controller extends BaseController
 {
@@ -22,7 +22,7 @@ class Controller extends BaseController
             //print_r($this->user);
             return $next($request);
         });
-        
+
     }
 
     public function user()

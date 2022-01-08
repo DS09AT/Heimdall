@@ -1,5 +1,7 @@
                     <?php
-                    $item = $item ?? new App\Item;
+                    //$item = $item ?? new App\Models\Item;
+                    $item = new App\Models\Item;
+                    $item->id = 0;
                     ?>
                     <section class="item-container" data-id="">
                         <div class="item set-bg-elem" style="background-color: {{ $item->colour ?? '#222' }}">
@@ -17,5 +19,5 @@
                             <a class="link{{ title_color($item->colour) }}"{!! $item->link_target !!} href="{{ $item->link }}"><i class="fas {{ $item->link_icon }}"></i></a>
                         </div>
                         <a class="item-edit" href="{{ route($item->link_type.'.edit', [ $item->id ]) }}"><i class="fas fa-pencil"></i></a>
-                        
+
                     </section>

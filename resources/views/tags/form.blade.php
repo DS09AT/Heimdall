@@ -20,13 +20,13 @@
                     $checked = false;
                     if(isset($item->pinned) && (bool)$item->pinned === true) $checked = true;
                     $set_checked = ($checked) ? ' checked="checked"' : '';
-                    ?>                   
+                    ?>
                     <input type="checkbox" name="pinned" value="1"<?php echo $set_checked;?> />
                     <span class="slider round"></span>
                 </label>
             </div>
             <div class="input">
-                <label>{{ __('app.apps.colour') }} *</label>
+                <label>{{ __('app.apps.colour') }}</label>
                 {!! Form::text('colour', null, array('placeholder' => __('app.apps.hex'),'class' => 'form-control color-picker')) !!}
                 <hr />
             </div>
@@ -51,9 +51,9 @@
                     </div>
                 </div>
             </div>
-            
+
             <div id="sapconfig"></div>
-            
+
         </div>
         <footer>
             <div class="section-title">&nbsp;</div>
